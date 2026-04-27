@@ -15,8 +15,7 @@ void setup() {
 
 void loop() {
   Serial.print("Enviando pacote: ");
-  Serial.println(counter);
-  print("hi")
+  Serial.println(counter);  
 
   LoRa.beginPacket();
   LoRa.print("#");
