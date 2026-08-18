@@ -5,7 +5,7 @@
 Este projeto demonstra a implementação de um sistema de comunicação sem fio utilizando dois microcontroladores ESP32 e dois módulos LoRa Ra-02 (baseados no chip SX1278 da Semtech). O sistema é composto por um nó transmissor dedicado e um nó receptor dedicado.
 
 ## 🚀 Membros da Dupla
-* **Marcos Félix Ferreira** 
+* **Marcos Ferreira** 
 * **Samuel Froes** 
 
 ---
