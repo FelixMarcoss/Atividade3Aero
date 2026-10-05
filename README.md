@@ -1,45 +1,40 @@
+# Comunicação LoRa ponto a ponto com ESP32
 
+Experimento de comunicação sem fio feito para a atividade 3 do trainee Aero. Dois ESP32 com módulos LoRa Ra-02 (SX1278) desempenham papéis separados: um transmite pacotes numerados e o outro mostra os pacotes recebidos no monitor serial.
 
-# Atividade 3: Comunicação LoRa Unidirecional (Ponto a Ponto)
+**Equipe:** Marcos Ferreira e Samuel Froes.
 
-Este projeto demonstra a implementação de um sistema de comunicação sem fio utilizando dois microcontroladores ESP32 e dois módulos LoRa Ra-02 (baseados no chip SX1278 da Semtech). O sistema é composto por um nó transmissor dedicado e um nó receptor dedicado.
+## Funcionamento
 
-## 🚀 Membros da Dupla
-* **Marcos Ferreira** 
-* **Samuel Froes** 
+1. O transmissor inicia o rádio em **915 MHz**.
+2. A cada **5 segundos**, envia uma mensagem de texto `#1`, `#2`, `#3` e assim por diante.
+3. O receptor escuta a mesma frequência e imprime o conteúdo de cada pacote recebido.
+4. Ambos usam comunicação serial a **115200 baud** para diagnóstico.
 
----
+O código está dividido entre [`codTransmissao/codTransmissao.ino`](codTransmissao/codTransmissao.ino) e [`codRecebimento/codRecebimmento.ino`](codRecebimento/codRecebimmento.ino).
 
-## 🛠️ Detalhes da Montagem
-A comunicação entre o ESP32 e o módulo LoRa Ra-02 é feita via interface **SPI**. Devido à sensibilidade do módulo Ra-02 em relação à alimentação, foi utilizada a linha de 3.3V do ESP32, garantindo que o módulo instável operasse apenas como receptor para evitar quedas de tensão excessivas.
+## Ligações do módulo Ra-02
 
-### Esquema de Conexão (Pinout)
-| Componente LoRa | Pino ESP32 | Função SPI |
-| :--- | :--- | :--- |
-| **VCC** | 3.3V | Alimentação |
-| **GND** | GND | Terra |
-| **NSS (CS)** | GPIO 5 | Seleção do Escravo |
-| **RST** | GPIO 14 | Reset do Hardware |
-| **DIO0** | GPIO 2 | Interrupção de Dados |
-| **SCK** | GPIO 18 | Clock |
-| **MISO** | GPIO 19 | Master In Slave Out |
-| **MOSI** | GPIO 23 | Master Out Slave In |
+| Ra-02 | ESP32 | Função |
+| --- | --- | --- |
+| VCC | 3,3 V | Alimentação |
+| GND | GND | Referência |
+| NSS/CS | GPIO 5 | Seleção SPI |
+| RST | GPIO 14 | Reset |
+| DIO0 | GPIO 2 | Interrupção |
+| SCK | GPIO 18 | Clock SPI |
+| MISO | GPIO 19 | Dados do módulo para o ESP32 |
+| MOSI | GPIO 23 | Dados do ESP32 para o módulo |
 
----
+**Atenção:** o Ra-02 deve ser alimentado com 3,3 V. Confirme a capacidade de alimentação da placa e as conexões antes de energizar o circuito.
 
-## ⚙️ Configuração do Sistema
-Para o cumprimento dos requisitos da atividade, os módulos foram configurados com os seguintes parâmetros:
+## Reproduzir o experimento
 
-* **Frequência:** 915.0 MHz (Banda ISM permitida no Brasil).
-* **Taxa de Transmissão:** O transmissor envia uma mensagem a cada 5 segundos.
-* **Formato da Mensagem:** String de texto simples contendo um índice incremental (Ex: `#1`, `#2`, `#3`...).
-* **Depuração:** O status de cada pacote enviado e recebido é exibido via Serial Monitor (Baud rate: 115200).
+1. Prepare duas placas ESP32 e dois módulos Ra-02 com as ligações acima.
+2. Instale o suporte para ESP32 e uma biblioteca que forneça `LoRa.h` no Arduino IDE.
+3. Grave o sketch de transmissão em uma placa e o de recepção na outra.
+4. Abra o monitor serial de cada placa em `115200 baud` e acompanhe os números enviados e recebidos.
 
----
+## Escopo
 
-## 📂 Organização do Repositório
-* `/codTransmissao`: Código fonte para o ESP32 que realiza o envio dos dados.
-* `/codRecebimento`: Código fonte para o ESP32 que realiza a leitura e exibição dos dados.
-* `README.md`: Documentação técnica do projeto.
-
----
+O projeto demonstra transmissão **unidirecional** de texto. Não implementa confirmação de entrega, retransmissão, criptografia ou medição de alcance. A recepção depende de frequência e pinagem compatíveis nos dois dispositivos.
